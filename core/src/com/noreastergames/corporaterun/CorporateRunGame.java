@@ -22,6 +22,9 @@ public class CorporateRunGame extends ApplicationAdapter {
 	private static final int DEFAULT_IMAGE_HEIGHT = 64;
 	private static final int DEFAULT_IMAGE_WIDTH = 64;
 	
+	private static final int CELL_HEIGHT = 64;
+	private static final int CELL_WIDTH = 64;
+	
 	private Texture playerImage;
 	private Rectangle playerRectangle;
 	
@@ -66,8 +69,12 @@ public class CorporateRunGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(playerImage, playerRectangle.x, playerRectangle.y);
 		
-		for(Rectangle r : enemies) {
-			batch.draw(enemyImage, r.x, r.y);
+		for(Rectangle enemy : enemies) {
+			batch.draw(enemyImage, enemy.x, enemy.y);
+			
+			if (enemy.overlaps(playerRectangle)) {
+				enemies.removeValue(enemy, false);
+			}
 		}
 		batch.end();
 		
@@ -75,32 +82,32 @@ public class CorporateRunGame extends ApplicationAdapter {
 		/**
 		 *  Keyboard Controls
 		 */
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
 			if (playerRectangle.y + 64 > SCREEN_HEIGHT) {
 				playerRectangle.y = SCREEN_HEIGHT - 64;
 			} else {
-				playerRectangle.y += 200 * Gdx.graphics.getDeltaTime();
+				playerRectangle.y += CELL_HEIGHT;
 			}
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
 			if (playerRectangle.x < 0) {
 				playerRectangle.x = 0;
 			} else {
-				playerRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
+				playerRectangle.x -= CELL_WIDTH;
 			}
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 			if (playerRectangle.y < 0) {
 				playerRectangle.y = 0;
 			} else {
-				playerRectangle.y -= 200 * Gdx.graphics.getDeltaTime();
+				playerRectangle.y -= CELL_HEIGHT;
 			}
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 			if (playerRectangle.x + 64 > SCREEN_WIDTH) {
 				playerRectangle.x = SCREEN_WIDTH - 64;
 			} else {
-				playerRectangle.x += 200 * Gdx.graphics.getDeltaTime();
+				playerRectangle.x += CELL_WIDTH;
 			}
 		}
 		
@@ -110,23 +117,34 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 */
 		if (TimeUtils.nanoTime() - enemySpawnTime > 1000000000 &&
 				enemies.size < 4) {
-			System.out.println("Calling spawn");
 			spawnEnemy();
 		}
 	}
 	
 	@Override
 	public void dispose () {
+		playerImage.dispose();
+		enemyImage.dispose();
+		testSound.dispose();
+		testMusic.dispose();
 		batch.dispose();
 	}
 	
 	private void spawnEnemy() {
-		System.out.println("Enemy cooking");
 		Rectangle newEnemy = new Rectangle();
-		newEnemy.x = MathUtils.random(200, 500);
-		newEnemy.y = MathUtils.random(200, 400);
 		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
 		newEnemy.width = DEFAULT_IMAGE_WIDTH;
+		newEnemy.x = MathUtils.random(200, 500);
+		newEnemy.y = MathUtils.random(200, 400);
+		
+		for (int i = 0; i < enemies.size; i ++) {
+			if (enemies.get(i).overlaps(newEnemy)) {
+				newEnemy.x = MathUtils.random(200, 500);
+				newEnemy.y = MathUtils.random(200, 400);
+				i = 0;
+				System.out.println("Enemy overlapped");
+			}
+		}
 
 		enemies.add(newEnemy);
 	}

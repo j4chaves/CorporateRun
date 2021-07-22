@@ -26,10 +26,10 @@ public class CorporateRunGame extends ApplicationAdapter {
 	private static final int CELL_WIDTH = 64;
 	
 	private Texture playerImage;
-	private Rectangle playerRectangle;
+	private Entity player;
 	
 	private Texture enemyImage;
-	private Array<Rectangle> enemies;;
+	private Array<Entity> enemies;
 	private long enemySpawnTime;
 	
 	private Sound testSound;
@@ -57,9 +57,11 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		batch = new SpriteBatch();
 		
-		// Instantiate Rectangles
-		playerRectangle = new Rectangle(50, 50, 64, 64);
+		// Instantiate Rectangles		
 		enemies = new Array<>();
+		
+		Rectangle playerRectangle = new Rectangle(50, 50, 64, 64);
+		player = new Entity(playerRectangle, playerImage);
 	}
 
 	@Override
@@ -67,12 +69,12 @@ public class CorporateRunGame extends ApplicationAdapter {
 		ScreenUtils.clear(Color.DARK_GRAY);
 		camera.update();
 		batch.begin();
-		batch.draw(playerImage, playerRectangle.x, playerRectangle.y);
+		batch.draw(player.getTexture(), player.getRectangle().x, player.getRectangle().y);
 		
-		for(Rectangle enemy : enemies) {
-			batch.draw(enemyImage, enemy.x, enemy.y);
+		for(Entity enemy : enemies) {
+			batch.draw(enemy.getTexture(), enemy.getRectangle().x, enemy.getRectangle().y);
 			
-			if (enemy.overlaps(playerRectangle)) {
+			if (enemy.getRectangle().overlaps(player.getRectangle())) {
 				enemies.removeValue(enemy, false);
 			}
 		}
@@ -83,31 +85,31 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 *  Keyboard Controls
 		 */
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			if (playerRectangle.y + 64 > SCREEN_HEIGHT) {
-				playerRectangle.y = SCREEN_HEIGHT - 64;
+			if (player.getRectangle().y + 64 > SCREEN_HEIGHT) {
+				player.getRectangle().y = SCREEN_HEIGHT - 64;
 			} else {
-				playerRectangle.y += CELL_HEIGHT;
+				player.getRectangle().y += CELL_HEIGHT;
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			if (playerRectangle.x < 0) {
-				playerRectangle.x = 0;
+			if (player.getRectangle().x < 0) {
+				player.getRectangle().x = 0;
 			} else {
-				playerRectangle.x -= CELL_WIDTH;
+				player.getRectangle().x -= CELL_WIDTH;
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			if (playerRectangle.y < 0) {
-				playerRectangle.y = 0;
+			if (player.getRectangle().y < 0) {
+				player.getRectangle().y = 0;
 			} else {
-				playerRectangle.y -= CELL_HEIGHT;
+				player.getRectangle().y -= CELL_HEIGHT;
 			}
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			if (playerRectangle.x + 64 > SCREEN_WIDTH) {
-				playerRectangle.x = SCREEN_WIDTH - 64;
+			if (player.getRectangle().x + 64 > SCREEN_WIDTH) {
+				player.getRectangle().x = SCREEN_WIDTH - 64;
 			} else {
-				playerRectangle.x += CELL_WIDTH;
+				player.getRectangle().x += CELL_WIDTH;
 			}
 		}
 		
@@ -134,11 +136,11 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle newEnemy = new Rectangle();
 		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
 		newEnemy.width = DEFAULT_IMAGE_WIDTH;
-		newEnemy.x = MathUtils.random(200, 500);
-		newEnemy.y = MathUtils.random(200, 400);
+		newEnemy.x = MathUtils.random(150, 500);
+		newEnemy.y = MathUtils.random(150, 400);
 		
 		for (int i = 0; i < enemies.size; i ++) {
-			if (enemies.get(i).overlaps(newEnemy)) {
+			if (enemies.get(i).getRectangle().overlaps(newEnemy)) {
 				newEnemy.x = MathUtils.random(200, 500);
 				newEnemy.y = MathUtils.random(200, 400);
 				i = 0;
@@ -146,6 +148,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 			}
 		}
 
-		enemies.add(newEnemy);
+		Entity enemy = new Entity(newEnemy, enemyImage);
+		enemies.add(enemy);
 	}
 }

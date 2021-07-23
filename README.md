@@ -1,8 +1,6 @@
 # CorporateRun
 
-A [LibGDX](http://libgdx.badlogicgames.com/) project generated with [SquidSetup](https://github.com/tommyettinger/SquidSetup).
-
-Project template included simple launchers and an `ApplicationAdapter` extension showing usage of [SquidLib](https://github.com/SquidPony/SquidLib) for display and some logic.
+A [LibGDX](http://libgdx.badlogicgames.com/) project to serve as a basis for learning the library while following the RoguelikeDev Complete Roguelike Tutorial.
 
 ## Gradle
 

@@ -3,8 +3,6 @@ package com.noreastergames.corporaterun;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +22,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 	
 	private static final int CELL_HEIGHT = 64;
 	private static final int CELL_WIDTH = 64;
+	private static final int MAP_MAX_CELLS_HORIZONTAL = 12;
+	private static final int MAP_MAX_CELLS_VERTICAL = 9;
 	
 	private Texture playerImage;
 	private Entity player;
@@ -32,8 +32,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 	private Array<Entity> enemies;
 	private long enemySpawnTime;
 	
-	private Sound testSound;
-	private Music testMusic;
+	private Array<Entity> mapCells;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -44,24 +43,17 @@ public class CorporateRunGame extends ApplicationAdapter {
 		playerImage = new Texture(Gdx.files.internal("player.png"));
 		enemyImage = new Texture(Gdx.files.internal("enemy.png"));
 		
-		// Load sound effects and music - TODO implement later
-		//testSound = Gdx.audio.newSound(Gdx.files.internal("testSound.wav"));
-		//testMusic = Gdx.audio.newMusic((Gdx.files.internal("testMusic.mp3"));
-		
-		// Start background music - TODO implement later
-		//testMusic.setLooping(true);
-		//testMusic.play();
-		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SCREEN_HEIGHT, SCREEN_WIDTH);
 		
 		batch = new SpriteBatch();
 		
-		// Instantiate Rectangles		
 		enemies = new Array<>();
 		
-		Rectangle playerRectangle = new Rectangle(50, 50, 64, 64);
+		Rectangle playerRectangle = new Rectangle(64, 64, 64, 64);
 		player = new Entity(playerRectangle, playerImage);
+		
+		mapCells = generateMap();
 	}
 
 	@Override
@@ -69,15 +61,21 @@ public class CorporateRunGame extends ApplicationAdapter {
 		ScreenUtils.clear(Color.DARK_GRAY);
 		camera.update();
 		batch.begin();
+		
+		for (Entity mapCell : mapCells) {
+			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
+		}
+		
 		batch.draw(player.getTexture(), player.getRectangle().x, player.getRectangle().y);
 		
-		for(Entity enemy : enemies) {
+		for (Entity enemy : enemies) {
 			batch.draw(enemy.getTexture(), enemy.getRectangle().x, enemy.getRectangle().y);
 			
 			if (enemy.getRectangle().overlaps(player.getRectangle())) {
 				enemies.removeValue(enemy, false);
 			}
 		}
+		
 		batch.end();
 		
 		
@@ -112,6 +110,9 @@ public class CorporateRunGame extends ApplicationAdapter {
 				player.getRectangle().x += CELL_WIDTH;
 			}
 		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
+		}
 		
 		
 		/**
@@ -127,8 +128,6 @@ public class CorporateRunGame extends ApplicationAdapter {
 	public void dispose () {
 		playerImage.dispose();
 		enemyImage.dispose();
-		testSound.dispose();
-		testMusic.dispose();
 		batch.dispose();
 	}
 	
@@ -136,13 +135,13 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle newEnemy = new Rectangle();
 		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
 		newEnemy.width = DEFAULT_IMAGE_WIDTH;
-		newEnemy.x = MathUtils.random(150, 500);
-		newEnemy.y = MathUtils.random(150, 400);
+		newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL) * CELL_WIDTH;
+		newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL) * CELL_HEIGHT;
 		
 		for (int i = 0; i < enemies.size; i ++) {
 			if (enemies.get(i).getRectangle().overlaps(newEnemy)) {
-				newEnemy.x = MathUtils.random(200, 500);
-				newEnemy.y = MathUtils.random(200, 400);
+				newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL) * CELL_WIDTH;
+				newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL) * CELL_HEIGHT;
 				i = 0;
 				System.out.println("Enemy overlapped");
 			}
@@ -150,5 +149,30 @@ public class CorporateRunGame extends ApplicationAdapter {
 
 		Entity enemy = new Entity(newEnemy, enemyImage);
 		enemies.add(enemy);
+	}
+	
+	private Array<Entity> generateMap() {
+		Array<Entity> mapCells = new Array<>();
+		for (int i = 0; i < MAP_MAX_CELLS_HORIZONTAL; i++) {
+			for (int j = 0; j < MAP_MAX_CELLS_VERTICAL; j++) {
+				Rectangle cellRect = new Rectangle();
+				cellRect.height = CELL_HEIGHT;
+				cellRect.width = CELL_WIDTH;
+				cellRect.x = CELL_WIDTH * i;
+				cellRect.y = CELL_HEIGHT * j;
+				int randTile = MathUtils.random(0, 2);
+				String cellTextureName = new String();
+				if (randTile == 0) {
+					cellTextureName = "grassTile.png";
+				} else if (randTile == 1) {
+					cellTextureName = "waterTile.png";
+				} else {
+					cellTextureName = "brickTile.png";
+				}
+				Entity cell = new Entity(cellRect, new Texture(cellTextureName));
+				mapCells.add(cell);
+			}
+		}
+		return mapCells;
 	}
 }

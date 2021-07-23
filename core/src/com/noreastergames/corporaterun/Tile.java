@@ -7,6 +7,7 @@ public class Tile extends Entity {
 	
 	private final boolean isWalkable;
 	private final boolean isTransparent;
+	private boolean inFieldOfView;
 	
 	public Tile(Rectangle rectangle, Texture texture, boolean isWalkable, boolean isTransparent) {
 		super(rectangle, texture);

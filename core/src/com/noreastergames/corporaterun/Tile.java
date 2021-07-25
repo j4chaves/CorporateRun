@@ -16,5 +16,19 @@ public class Tile extends Entity {
 		this.isTransparent = isTransparent;
 	}
 
-	
+	public boolean isInFieldOfView() {
+		return inFieldOfView;
+	}
+
+	public void setInFieldOfView(boolean inFieldOfView) {
+		this.inFieldOfView = inFieldOfView;
+	}
+
+	public boolean isWalkable() {
+		return isWalkable;
+	}
+
+	public boolean isTransparent() {
+		return isTransparent;
+	}
 }

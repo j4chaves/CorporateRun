@@ -58,27 +58,26 @@ public class Entity {
 	}
 
 
-	public void moveEntity(Action action, int newXTilePosition, int newYTilePosition) {
+	public void moveEntity(Action action, Tile tile) {
 		if (Action.MOVE_UP.equals(action)) {
-			if (newYTilePosition < GameMap.getMapMaxCellsVertical()) {
+			if (this.yTilePosition + 1 < GameMap.getMapMaxCellsVertical() && tile.isWalkable()) {
 				this.getRectangle().y += 64;
-				this.yTilePosition = newYTilePosition;
+				this.yTilePosition += 1;
 			}
 		} else if (Action.MOVE_DOWN.equals(action)) {
-			if (newYTilePosition > -1) {
+			if (this.yTilePosition -1 > -1 && tile.isWalkable()) {
 				this.getRectangle().y -= 64;
-				this.yTilePosition = newYTilePosition;
+				this.yTilePosition -= 1;
 			}
 		} else if (Action.MOVE_LEFT.equals(action)) {
-			if (newXTilePosition > -1) {
+			if (this.xTilePosition - 1 > -1 && tile.isWalkable()) {
 				this.getRectangle().x -= 64;
-				this.xTilePosition = newXTilePosition;
-				System.out.println(newXTilePosition);
+				this.xTilePosition -= 1;
 			}
 		} else if (Action.MOVE_RIGHT.equals(action)) {
-			if (newXTilePosition < GameMap.getMapMaxCellsHorizontal()) {
+			if (this.xTilePosition + 1 < GameMap.getMapMaxCellsHorizontal() && tile.isWalkable()) {
 				this.getRectangle().x += 64;
-				this.xTilePosition = newXTilePosition;
+				this.xTilePosition += 1;
 			}
 		}
 	}

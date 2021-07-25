@@ -32,7 +32,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 	private Array<Entity> enemies;
 	private long enemySpawnTime;
 	
-	private Array<Tile> mapCells;
+	private GameMap gameMap;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -53,7 +53,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle playerRectangle = new Rectangle(64, 64, 64, 64);
 		player = new Entity(playerRectangle, playerImage);
 		
-		mapCells = generateMap();
+		gameMap = new GameMap();
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		
-		for (Tile mapCell : mapCells) {
+		for (Tile mapCell : gameMap.getMapCells()) {
 			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
 		}
 		
@@ -149,40 +149,5 @@ public class CorporateRunGame extends ApplicationAdapter {
 
 		Entity enemy = new Entity(newEnemy, enemyImage);
 		enemies.add(enemy);
-	}
-	
-	private Array<Tile> generateMap() {
-		Array<Tile> mapCells = new Array<>();
-		for (int i = 0; i < MAP_MAX_CELLS_HORIZONTAL; i++) {
-			for (int j = 0; j < MAP_MAX_CELLS_VERTICAL; j++) {
-				Rectangle cellRect = new Rectangle();
-				cellRect.height = CELL_HEIGHT;
-				cellRect.width = CELL_WIDTH;
-				cellRect.x = CELL_WIDTH * i;
-				cellRect.y = CELL_HEIGHT * j;
-				int randTile = MathUtils.random(0, 2);
-				String cellTextureName = new String();
-				boolean isWalkable, isTransparent;
-				if (randTile == 0) {
-					cellTextureName = "grassTile.png";
-					isWalkable = true;
-					isTransparent = true;
-				} else if (randTile == 1) {
-					cellTextureName = "waterTile.png";
-					isWalkable = false;
-					isTransparent = true;
-				} else {
-					cellTextureName = "brickTile.png";
-					isWalkable = false;
-					isTransparent = false;
-				}
-				
-				Texture cellTexture = new Texture(cellTextureName);
-				Tile tile = new Tile(cellRect, cellTexture, isWalkable, isTransparent);
-				Entity cell = new Entity(cellRect, new Texture(cellTextureName));
-				mapCells.add(tile);
-			}
-		}
-		return mapCells;
 	}
 }

@@ -50,8 +50,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		enemies = new Array<>();
 		
-		Rectangle playerRectangle = new Rectangle(64, 64, 64, 64);
-		player = new Entity(playerRectangle, playerImage);
+		Rectangle playerRectangle = new Rectangle(0, 0, 64, 64);
+		player = new Entity(playerRectangle, playerImage, 0, 0);
 		
 		gameMap = new GameMap();
 	}
@@ -83,32 +83,20 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 *  Keyboard Controls
 		 */
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			if (player.getRectangle().y + 64 > SCREEN_HEIGHT) {
-				player.getRectangle().y = SCREEN_HEIGHT - 64;
-			} else {
-				player.getRectangle().y += CELL_HEIGHT;
-			}
+			int attemptedYMove = player.getyTilePosition() + 1;
+			player.moveEntity(Action.MOVE_UP, 0, attemptedYMove);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			if (player.getRectangle().x < 0) {
-				player.getRectangle().x = 0;
-			} else {
-				player.getRectangle().x -= CELL_WIDTH;
-			}
+			int attemptedXMove = player.getxTilePosition() - 1;
+			player.moveEntity(Action.MOVE_LEFT, attemptedXMove, 0);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			if (player.getRectangle().y < 0) {
-				player.getRectangle().y = 0;
-			} else {
-				player.getRectangle().y -= CELL_HEIGHT;
-			}
+			int attemptedYMove = player.getyTilePosition() - 1;
+			player.moveEntity(Action.MOVE_DOWN, 0, attemptedYMove);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			if (player.getRectangle().x + 64 > SCREEN_WIDTH) {
-				player.getRectangle().x = SCREEN_WIDTH - 64;
-			} else {
-				player.getRectangle().x += CELL_WIDTH;
-			}
+			int attemptedXMove = player.getxTilePosition() + 1;
+			player.moveEntity(Action.MOVE_RIGHT, attemptedXMove, 0);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
@@ -135,19 +123,19 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle newEnemy = new Rectangle();
 		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
 		newEnemy.width = DEFAULT_IMAGE_WIDTH;
-		newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL) * CELL_WIDTH;
-		newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL) * CELL_HEIGHT;
+		newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL-1) * CELL_WIDTH;
+		newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL-1) * CELL_HEIGHT;
 		
 		for (int i = 0; i < enemies.size; i ++) {
 			if (enemies.get(i).getRectangle().overlaps(newEnemy)) {
-				newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL) * CELL_WIDTH;
-				newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL) * CELL_HEIGHT;
+				newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL-1) * CELL_WIDTH;
+				newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL-1) * CELL_HEIGHT;
 				i = 0;
 				System.out.println("Enemy overlapped");
 			}
 		}
 
-		Entity enemy = new Entity(newEnemy, enemyImage);
+		Entity enemy = new Entity(newEnemy, enemyImage, 5, 5);
 		enemies.add(enemy);
 	}
 }

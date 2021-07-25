@@ -71,6 +71,7 @@ public class GameMap {
 				Texture cellTexture = new Texture(cellTextureName);
 				Tile tile = new Tile(cellRect, cellTexture, isWalkable, isTransparent, i, j);
 				mapCells.add(tile);
+				System.out.println("Tile x: " + i + "  Tile y: " + j);
 			}
 		}
 		return mapCells;

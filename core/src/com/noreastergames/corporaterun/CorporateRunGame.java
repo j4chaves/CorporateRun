@@ -32,7 +32,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 	private Array<Entity> enemies;
 	private long enemySpawnTime;
 	
-	private Array<Entity> mapCells;
+	private Array<Tile> mapCells;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -62,7 +62,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		
-		for (Entity mapCell : mapCells) {
+		for (Tile mapCell : mapCells) {
 			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
 		}
 		
@@ -151,8 +151,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 		enemies.add(enemy);
 	}
 	
-	private Array<Entity> generateMap() {
-		Array<Entity> mapCells = new Array<>();
+	private Array<Tile> generateMap() {
+		Array<Tile> mapCells = new Array<>();
 		for (int i = 0; i < MAP_MAX_CELLS_HORIZONTAL; i++) {
 			for (int j = 0; j < MAP_MAX_CELLS_VERTICAL; j++) {
 				Rectangle cellRect = new Rectangle();
@@ -162,15 +162,25 @@ public class CorporateRunGame extends ApplicationAdapter {
 				cellRect.y = CELL_HEIGHT * j;
 				int randTile = MathUtils.random(0, 2);
 				String cellTextureName = new String();
+				boolean isWalkable, isTransparent;
 				if (randTile == 0) {
 					cellTextureName = "grassTile.png";
+					isWalkable = true;
+					isTransparent = true;
 				} else if (randTile == 1) {
 					cellTextureName = "waterTile.png";
+					isWalkable = false;
+					isTransparent = true;
 				} else {
 					cellTextureName = "brickTile.png";
+					isWalkable = false;
+					isTransparent = false;
 				}
+				
+				Texture cellTexture = new Texture(cellTextureName);
+				Tile tile = new Tile(cellRect, cellTexture, isWalkable, isTransparent);
 				Entity cell = new Entity(cellRect, new Texture(cellTextureName));
-				mapCells.add(cell);
+				mapCells.add(tile);
 			}
 		}
 		return mapCells;

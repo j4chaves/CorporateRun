@@ -8,14 +8,12 @@ public class Entity {
 	private Rectangle rectangle;
 	private Texture texture;
 	
-	private int xTilePosition;
-	private int yTilePosition;
+	private TileCoord tileCoord;
 
-	public Entity(Rectangle rectangle, Texture texture, int xTilePosition, int yTilePosition) {
+	public Entity(Rectangle rectangle, Texture texture, TileCoord tileCoord) {
 		this.rectangle = rectangle;
 		this.texture = texture;
-		this.xTilePosition = xTilePosition;
-		this.yTilePosition = yTilePosition;
+		this.tileCoord = tileCoord;
 	}
 
 
@@ -38,46 +36,35 @@ public class Entity {
 		this.texture = texture;
 	}
 	
-	public int getxTilePosition() {
-		return xTilePosition;
+	public TileCoord getTileCoord() {
+		return tileCoord;
 	}
 
 
-	public void setxTilePosition(int xTilePosition) {
-		this.xTilePosition = xTilePosition;
+	public void setTileCoord(TileCoord tileCoord) {
+		this.tileCoord = tileCoord;
 	}
-
-
-	public int getyTilePosition() {
-		return yTilePosition;
-	}
-
-
-	public void setyTilePosition(int yTilePosition) {
-		this.yTilePosition = yTilePosition;
-	}
-
 
 	public void moveEntity(Action action, Tile tile) {
 		if (Action.MOVE_UP.equals(action)) {
-			if (this.yTilePosition + 1 < GameMap.getMapMaxCellsVertical() && tile.isWalkable()) {
+			if (this.tileCoord.getRow() + 1 < GameMap.getMapMaxCellsVertical() && tile.isWalkable()) {
 				this.getRectangle().y += 64;
-				this.yTilePosition += 1;
+				this.tileCoord.setRow(this.tileCoord.getRow() + 1);
 			}
 		} else if (Action.MOVE_DOWN.equals(action)) {
-			if (this.yTilePosition -1 > -1 && tile.isWalkable()) {
+			if (this.tileCoord.getRow() -1 > -1 && tile.isWalkable()) {
 				this.getRectangle().y -= 64;
-				this.yTilePosition -= 1;
+				this.tileCoord.setRow(this.tileCoord.getRow() - 1);
 			}
 		} else if (Action.MOVE_LEFT.equals(action)) {
-			if (this.xTilePosition - 1 > -1 && tile.isWalkable()) {
+			if (this.tileCoord.getColumn() - 1 > -1 && tile.isWalkable()) {
 				this.getRectangle().x -= 64;
-				this.xTilePosition -= 1;
+				this.tileCoord.setColumn(this.tileCoord.getColumn() - 1);
 			}
 		} else if (Action.MOVE_RIGHT.equals(action)) {
-			if (this.xTilePosition + 1 < GameMap.getMapMaxCellsHorizontal() && tile.isWalkable()) {
+			if (this.tileCoord.getColumn() + 1 < GameMap.getMapMaxCellsHorizontal() && tile.isWalkable()) {
 				this.getRectangle().x += 64;
-				this.xTilePosition += 1;
+				this.tileCoord.setColumn(this.tileCoord.getColumn() + 1);
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 package com.noreastergames.corporaterun;
 
+import java.util.Map;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -51,7 +53,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		enemies = new Array<>();
 		
 		Rectangle playerRectangle = new Rectangle(0, 0, 64, 64);
-		player = new Entity(playerRectangle, playerImage, 0, 0);
+		player = new Entity(playerRectangle, playerImage, new TileCoord(0, 0));
 		
 		gameMap = new GameMap();
 	}
@@ -62,7 +64,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		
-		for (Tile mapCell : gameMap.getMapCells()) {
+		for (Map.Entry<TileCoord, Tile> entry : gameMap.getMapCells().entrySet()) {
+			Tile mapCell = entry.getValue();
 			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
 		}
 		
@@ -83,20 +86,24 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 *  Keyboard Controls
 		 */
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			int attemptedYMove = player.getyTilePosition() + 1;
-			player.moveEntity(Action.MOVE_UP, 0, attemptedYMove);
+			int attemptedYMove = player.getTileCoord().getRow() + 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedYMove, player.getTileCoord().getColumn()));
+			player.moveEntity(Action.MOVE_UP, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			int attemptedXMove = player.getxTilePosition() - 1;
-			player.moveEntity(Action.MOVE_LEFT, attemptedXMove, 0);
+			int attemptedXMove = player.getTileCoord().getColumn() - 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getRow(), attemptedXMove));
+			player.moveEntity(Action.MOVE_LEFT, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			int attemptedYMove = player.getyTilePosition() - 1;
-			player.moveEntity(Action.MOVE_DOWN, 0, attemptedYMove);
+			int attemptedYMove = player.getTileCoord().getRow() - 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedYMove, player.getTileCoord().getColumn()));
+			player.moveEntity(Action.MOVE_DOWN, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			int attemptedXMove = player.getxTilePosition() + 1;
-			player.moveEntity(Action.MOVE_RIGHT, attemptedXMove, 0);
+			int attemptedXMove = player.getTileCoord().getColumn() + 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getRow(), attemptedXMove));
+			player.moveEntity(Action.MOVE_RIGHT, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
@@ -135,7 +142,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 			}
 		}
 
-		Entity enemy = new Entity(newEnemy, enemyImage, 5, 5);
+		Entity enemy = new Entity(newEnemy, enemyImage, new TileCoord(5, 5));
 		enemies.add(enemy);
 	}
 }

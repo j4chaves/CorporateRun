@@ -74,7 +74,6 @@ public class GameMap {
 				TileCoord tileCoord = new TileCoord(j, i);
 				Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
 				mapCells.put(tileCoord, tile);
-				System.out.println("Tile x: " + i + "  Tile y: " + j);
 			}
 		}
 		return mapCells;

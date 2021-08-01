@@ -1,6 +1,6 @@
 package com.noreastergames.corporaterun;
 
-public class LevelGenerator {
+public class RectangularRoom {
 
 	private int topLeftX;
 	private int topLeftY;
@@ -11,21 +11,21 @@ public class LevelGenerator {
 	private int width;
 	private int height;
 	
-	public LevelGenerator(int topLeftX, int topLeftY, int width, int height) {
+	public RectangularRoom(int topLeftX, int topLeftY, int width, int height) {
 		this.topLeftX = topLeftX;
 		this.topLeftY = topLeftY;
 		this.width = width;
 		this.height = height;
 		
 		this.bottomRightX = topLeftX + width;
-		this.bottomRightY = topLeftY + height;
+		this.bottomRightY = topLeftY - height;
 		
 		this.centerX = (topLeftX + bottomRightX) / 2;
 		this.centerY = (topLeftY + bottomRightY) / 2;
 	}
 	
 	public int[][] getInner() {
-		int[][] array = {{topLeftX + 1, topLeftY + 1},{bottomRightX, bottomRightY}};
+		int[][] array = {{topLeftX + 1, topLeftY - 1},{bottomRightX, bottomRightY}};
 		return array; 
 	}
 

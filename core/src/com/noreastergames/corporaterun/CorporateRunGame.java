@@ -16,16 +16,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class CorporateRunGame extends ApplicationAdapter {
-	private static final int SCREEN_HEIGHT = 600;
-	private static final int SCREEN_WIDTH = 800;
+	private static final int SCREEN_HEIGHT = 1024;
+	private static final int SCREEN_WIDTH = 1280;
 	
 	private static final int DEFAULT_IMAGE_HEIGHT = 64;
 	private static final int DEFAULT_IMAGE_WIDTH = 64;
-	
-	private static final int CELL_HEIGHT = 64;
-	private static final int CELL_WIDTH = 64;
-	private static final int MAP_MAX_CELLS_HORIZONTAL = 12;
-	private static final int MAP_MAX_CELLS_VERTICAL = 9;
 	
 	private Texture playerImage;
 	private Entity player;
@@ -55,7 +50,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle playerRectangle = new Rectangle(0, 0, 64, 64);
 		player = new Entity(playerRectangle, playerImage, new TileCoord(0, 0));
 		
-		gameMap = new GameMap();
+		gameMap = new GameMap(Global.CELL_HEIGHT, Global.CELL_WIDTH, Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
 	}
 
 	@Override
@@ -130,19 +125,19 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Rectangle newEnemy = new Rectangle();
 		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
 		newEnemy.width = DEFAULT_IMAGE_WIDTH;
-		newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL-1) * CELL_WIDTH;
-		newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL-1) * CELL_HEIGHT;
+		newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
+		newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
 		
 		for (int i = 0; i < enemies.size; i ++) {
 			if (enemies.get(i).getRectangle().overlaps(newEnemy)) {
-				newEnemy.x = MathUtils.random(3, MAP_MAX_CELLS_HORIZONTAL-1) * CELL_WIDTH;
-				newEnemy.y = MathUtils.random(2, MAP_MAX_CELLS_VERTICAL-1) * CELL_HEIGHT;
+				newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
+				newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
 				i = 0;
 				System.out.println("Enemy overlapped");
 			}
 		}
 
-		Entity enemy = new Entity(newEnemy, enemyImage, new TileCoord(5, 5));
+		Entity enemy = new Entity(newEnemy, enemyImage, new TileCoord((int)newEnemy.x, (int)newEnemy.y));
 		enemies.add(enemy);
 	}
 }

@@ -10,12 +10,17 @@ public class GameMap {
 
 	private HashMap<TileCoord, Tile> mapCells;
 	
-	private static final int CELL_HEIGHT = 64;
-	private static final int CELL_WIDTH = 64;
-	private static final int MAP_MAX_CELLS_HORIZONTAL = 12;
-	private static final int MAP_MAX_CELLS_VERTICAL = 9;
+	private final int CELL_HEIGHT;
+	private final int CELL_WIDTH;
+	private final int MAP_MAX_CELLS_HORIZONTAL;
+	private final int MAP_MAX_CELLS_VERTICAL;
 	
-	public GameMap() {
+	public GameMap(int cellHeight, int cellWidth, int maxCellsHoriz, int maxCellsVert) {
+		this.CELL_HEIGHT = cellHeight;
+		this.CELL_WIDTH = cellWidth;
+		this.MAP_MAX_CELLS_HORIZONTAL = maxCellsHoriz;
+		this.MAP_MAX_CELLS_VERTICAL = maxCellsVert;
+		
 		this.mapCells = generateMap();
 	}
 	
@@ -27,19 +32,19 @@ public class GameMap {
 		this.mapCells = mapCells;
 	}
 
-	public static int getCellHeight() {
+	public int getCellHeight() {
 		return CELL_HEIGHT;
 	}
 
-	public static int getCellWidth() {
+	public int getCellWidth() {
 		return CELL_WIDTH;
 	}
 
-	public static int getMapMaxCellsHorizontal() {
+	public int getMapMaxCellsHorizontal() {
 		return MAP_MAX_CELLS_HORIZONTAL;
 	}
 
-	public static int getMapMaxCellsVertical() {
+	public int getMapMaxCellsVertical() {
 		return MAP_MAX_CELLS_VERTICAL;
 	}
 

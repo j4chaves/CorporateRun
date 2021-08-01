@@ -47,7 +47,7 @@ public class Entity {
 
 	public void moveEntity(Action action, Tile tile) {
 		if (Action.MOVE_UP.equals(action)) {
-			if (this.tileCoord.getRow() + 1 < GameMap.getMapMaxCellsVertical() && tile.isWalkable()) {
+			if (this.tileCoord.getRow() + 1 < Global.MAP_MAX_CELLS_VERTICAL && tile.isWalkable()) {
 				this.getRectangle().y += 64;
 				this.tileCoord.setRow(this.tileCoord.getRow() + 1);
 			}
@@ -62,7 +62,7 @@ public class Entity {
 				this.tileCoord.setColumn(this.tileCoord.getColumn() - 1);
 			}
 		} else if (Action.MOVE_RIGHT.equals(action)) {
-			if (this.tileCoord.getColumn() + 1 < GameMap.getMapMaxCellsHorizontal() && tile.isWalkable()) {
+			if (this.tileCoord.getColumn() + 1 < Global.MAP_MAX_CELLS_HORIZONTAL && tile.isWalkable()) {
 				this.getRectangle().x += 64;
 				this.tileCoord.setColumn(this.tileCoord.getColumn() + 1);
 			}

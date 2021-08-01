@@ -4,33 +4,33 @@ import java.util.Objects;
 
 public class TileCoord {
 
-	private int row;
-	private int column;
+	private int xCoord;
+	private int yCoord;
 	
-	public TileCoord(int row, int column) {
-		this.row = row;
-		this.column = column;
+	public TileCoord(int xCoord, int yCoord) {
+		this.yCoord = yCoord;
+		this.xCoord = xCoord;
 	}
 	
-	public int getRow() {
-		return row;
+	public int getyCoord() {
+		return yCoord;
 	}
 	
-	public void setRow(int row) {
-		this.row = row;
+	public void setyCoord(int yCoord) {
+		this.yCoord = yCoord;
 	}
 	
-	public int getColumn() {
-		return column;
+	public int getxCoord() {
+		return xCoord;
 	}
 	
-	public void setColumn(int column) {
-		this.column = column;
+	public void setxCoord(int xCoord) {
+		this.xCoord = xCoord;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(column, row);
+		return Objects.hash(xCoord, yCoord);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class TileCoord {
 			return false;
 		}
 		TileCoord other = (TileCoord) obj;
-		return column == other.column && row == other.row;
+		return xCoord == other.xCoord && yCoord == other.yCoord;
 	}
 	
 }

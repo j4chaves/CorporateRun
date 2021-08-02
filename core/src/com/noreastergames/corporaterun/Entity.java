@@ -47,24 +47,24 @@ public class Entity {
 
 	public void moveEntity(Action action, Tile tile) {
 		if (Action.MOVE_UP.equals(action)) {
-			if (this.tileCoord.getRow() + 1 < Global.MAP_MAX_CELLS_VERTICAL && tile.isWalkable()) {
-				this.getRectangle().y += 64;
-				this.tileCoord.setRow(this.tileCoord.getRow() + 1);
+			if (this.tileCoord.getYCoord() + 1 < Global.MAP_MAX_CELLS_VERTICAL && tile.isWalkable()) {
+				this.getRectangle().y += Global.CELL_HEIGHT;
+				this.tileCoord.setYCoord(this.tileCoord.getYCoord() + 1);
 			}
 		} else if (Action.MOVE_DOWN.equals(action)) {
-			if (this.tileCoord.getRow() -1 > -1 && tile.isWalkable()) {
-				this.getRectangle().y -= 64;
-				this.tileCoord.setRow(this.tileCoord.getRow() - 1);
+			if (this.tileCoord.getYCoord() -1 > -1 && tile.isWalkable()) {
+				this.getRectangle().y -= Global.CELL_HEIGHT;
+				this.tileCoord.setYCoord(this.tileCoord.getYCoord() - 1);
 			}
 		} else if (Action.MOVE_LEFT.equals(action)) {
-			if (this.tileCoord.getColumn() - 1 > -1 && tile.isWalkable()) {
-				this.getRectangle().x -= 64;
-				this.tileCoord.setColumn(this.tileCoord.getColumn() - 1);
+			if (this.tileCoord.getXCoord() - 1 > -1 && tile.isWalkable()) {
+				this.getRectangle().x -= Global.CELL_WIDTH;
+				this.tileCoord.setXCoord(this.tileCoord.getXCoord() - 1);
 			}
 		} else if (Action.MOVE_RIGHT.equals(action)) {
-			if (this.tileCoord.getColumn() + 1 < Global.MAP_MAX_CELLS_HORIZONTAL && tile.isWalkable()) {
-				this.getRectangle().x += 64;
-				this.tileCoord.setColumn(this.tileCoord.getColumn() + 1);
+			if (this.tileCoord.getXCoord() + 1 < Global.MAP_MAX_CELLS_HORIZONTAL && tile.isWalkable()) {
+				this.getRectangle().x += Global.CELL_WIDTH;
+				this.tileCoord.setXCoord(this.tileCoord.getXCoord() + 1);
 			}
 		}
 	}

@@ -2,63 +2,63 @@ package com.noreastergames.corporaterun;
 
 public class RectangularRoom {
 
-	private int topLeftX;
-	private int topLeftY;
-	private int bottomRightX;
-	private int bottomRightY;
+	private int bottomLeftX;
+	private int bottomLeftY;
+	private int topRightX;
+	private int topRightY;
 	private int centerX;
 	private int centerY;
 	private int width;
 	private int height;
 	
-	public RectangularRoom(int topLeftX, int topLeftY, int width, int height) {
-		this.topLeftX = topLeftX;
-		this.topLeftY = topLeftY;
-		this.width = width;
-		this.height = height;
+	public RectangularRoom(int bottomLeftX, int bottomLeftY, int width, int height) {
+		this.bottomLeftX = bottomLeftX * 32;
+		this.bottomLeftY = bottomLeftY * 32;
+		this.width = width * 32;
+		this.height = height * 32;
 		
-		this.bottomRightX = topLeftX + width;
-		this.bottomRightY = topLeftY - height;
+		this.topRightX = this.bottomLeftX + this.width;
+		this.topRightY = this.bottomLeftY + this.height;
 		
-		this.centerX = (topLeftX + bottomRightX) / 2;
-		this.centerY = (topLeftY + bottomRightY) / 2;
+		this.centerX = (this.bottomLeftX + topRightX) / 2;
+		this.centerY = (this.bottomLeftY + topRightY) / 2;
 	}
 	
 	public int[][] getInner() {
-		int[][] array = {{topLeftX + 1, topLeftY - 1},{bottomRightX, bottomRightY}};
+		int[][] array = {{bottomLeftX + 1, bottomLeftY + 1},{topRightX, topRightY}};
 		return array; 
 	}
 
-	public int getTopLeftX() {
-		return topLeftX;
+	public int getBottomLeftX() {
+		return bottomLeftX;
 	}
 
-	public void setTopLeftX(int topLeftX) {
-		this.topLeftX = topLeftX;
+	public void setBottomLeftX(int bottomLeftX) {
+		this.bottomLeftX = bottomLeftX;
 	}
 
-	public int getTopLeftY() {
-		return topLeftY;
+	public int getBottomLeftY() {
+		return bottomLeftY;
 	}
 
-	public void setTopLeftY(int topLeftY) {
-		this.topLeftY = topLeftY;
+	public void setBottomLeftY(int bottomLeftY) {
+		this.bottomLeftY = bottomLeftY;
 	}
 
-	public int getBottomRightX() {
-		return bottomRightX;
+	public int getTopRightX() {
+		return topRightX;
 	}
 
-	public void setBottomRightX(int bottomRightX) {
-		this.bottomRightX = bottomRightX;
+	public void setTopRightX(int topRightX) {
+		this.topRightX = topRightX;
 	}
 
-	public int getBottomRightY() {
-		return bottomRightY;
+	public int getTopRightY() {
+		return topRightY;
 	}
 
-	public void setBottomRightY(int bottomRightY) {
-		this.bottomRightY = bottomRightY;
+	public void setTopRightY(int topRightY) {
+		this.topRightY = topRightY;
 	}
 
 	public int getCenterX() {

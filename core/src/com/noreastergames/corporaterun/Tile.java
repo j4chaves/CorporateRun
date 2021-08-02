@@ -8,6 +8,7 @@ public class Tile extends Entity {
 	private final boolean isWalkable;
 	private final boolean isTransparent;	
 	private boolean inFieldOfView;
+	private boolean isOccupied;
 	
 	public Tile(Rectangle rectangle, Texture texture, TileCoord tileCoord, 
 			boolean isWalkable, boolean isTransparent) {
@@ -30,5 +31,13 @@ public class Tile extends Entity {
 
 	public boolean isTransparent() {
 		return isTransparent;
+	}
+
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
 	}
 }

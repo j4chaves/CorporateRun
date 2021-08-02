@@ -12,19 +12,19 @@ public class TileCoord {
 		this.xCoord = xCoord;
 	}
 	
-	public int getyCoord() {
+	public int getYCoord() {
 		return yCoord;
 	}
 	
-	public void setyCoord(int yCoord) {
+	public void setYCoord(int yCoord) {
 		this.yCoord = yCoord;
 	}
 	
-	public int getxCoord() {
+	public int getXCoord() {
 		return xCoord;
 	}
 	
-	public void setxCoord(int xCoord) {
+	public void setXCoord(int xCoord) {
 		this.xCoord = xCoord;
 	}
 	

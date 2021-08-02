@@ -3,8 +3,8 @@ package com.noreastergames.corporaterun;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 public class GameMap {
 
@@ -47,6 +47,12 @@ public class GameMap {
 	public int getMapMaxCellsVertical() {
 		return MAP_MAX_CELLS_VERTICAL;
 	}
+	
+	public void setSpecificMapCell(Tile tile) {
+		if (mapCells.containsKey(tile.getTileCoord())) {
+			mapCells.replace(tile.getTileCoord(), tile);
+		}
+	}
 
 	private HashMap<TileCoord, Tile> generateMap() {
 		HashMap<TileCoord, Tile> mapCells = new HashMap<>();
@@ -58,7 +64,7 @@ public class GameMap {
 				cellRect.x = CELL_WIDTH * i;
 				cellRect.y = CELL_HEIGHT * j;
 				
-				int randTile = MathUtils.random(0, 2);
+				/*int randTile = MathUtils.random(0, 2);
 				String cellTextureName = new String();
 				boolean isWalkable, isTransparent;
 				if (randTile == 0) {
@@ -73,14 +79,29 @@ public class GameMap {
 					cellTextureName = "brickTile.png";
 					isWalkable = false;
 					isTransparent = false;
-				}
+				}*/
+				
+				String cellTextureName = "brickTile.png";
 				
 				Texture cellTexture = new Texture(cellTextureName);
 				TileCoord tileCoord = new TileCoord(j, i);
-				Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
+				Tile tile = new Tile(cellRect, cellTexture, tileCoord, true, false);
+				//Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
 				mapCells.put(tileCoord, tile);
 			}
 		}
 		return mapCells;
+	}
+
+	public Array<Tile> getWalkableCells() {
+		Array<Tile> walkableCells = new Array<>();
+		
+		for (Tile t : mapCells.values()) {
+			if (t.isWalkable()) {
+				walkableCells.add(t);
+			}
+		}
+		
+		return walkableCells;
 	}
 }

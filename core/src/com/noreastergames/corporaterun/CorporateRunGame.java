@@ -13,21 +13,16 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class CorporateRunGame extends ApplicationAdapter {
 	private static final int SCREEN_HEIGHT = 1024;
 	private static final int SCREEN_WIDTH = 1280;
-	
-	private static final int DEFAULT_IMAGE_HEIGHT = 64;
-	private static final int DEFAULT_IMAGE_WIDTH = 64;
 	
 	private Texture playerImage;
 	private Entity player;
 	
 	private Texture enemyImage;
 	private Array<Entity> enemies;
-	private long enemySpawnTime;
 	
 	private GameMap gameMap;
 	
@@ -47,10 +42,10 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		enemies = new Array<>();
 		
-		Rectangle playerRectangle = new Rectangle(0, 0, 64, 64);
-		player = new Entity(playerRectangle, playerImage, new TileCoord(0, 0));
+		Rectangle playerRectangle = new Rectangle(9*32, 9*32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
+		player = new Entity(playerRectangle, playerImage, new TileCoord(3, 5));
 		
-		gameMap = new GameMap(Global.CELL_HEIGHT, Global.CELL_WIDTH, Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
+		gameMap = new ProcGen().generateDungeon(Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
 	}
 
 	@Override
@@ -81,26 +76,26 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 *  Keyboard Controls
 		 */
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			int attemptedYMove = player.getTileCoord().getRow() + 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedYMove, player.getTileCoord().getColumn()));
+			int attemptedYMove = player.getTileCoord().getYCoord() + 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getXCoord(), attemptedYMove));
 			player.moveEntity(Action.MOVE_UP, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			int attemptedXMove = player.getTileCoord().getColumn() - 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getRow(), attemptedXMove));
+			int attemptedXMove = player.getTileCoord().getXCoord() - 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedXMove, player.getTileCoord().getYCoord()));
 			player.moveEntity(Action.MOVE_LEFT, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			int attemptedYMove = player.getTileCoord().getRow() - 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedYMove, player.getTileCoord().getColumn()));
+			int attemptedYMove = player.getTileCoord().getYCoord() - 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getXCoord(), attemptedYMove));
 			player.moveEntity(Action.MOVE_DOWN, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			int attemptedXMove = player.getTileCoord().getColumn() + 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getRow(), attemptedXMove));
+			int attemptedXMove = player.getTileCoord().getXCoord() + 1;
+			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedXMove, player.getTileCoord().getYCoord()));
 			player.moveEntity(Action.MOVE_RIGHT, tile);
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 			Gdx.app.exit();
 		}
 		
@@ -108,9 +103,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 		/**
 		 * Spawn new enemies
 		 */
-		if (TimeUtils.nanoTime() - enemySpawnTime > 1000000000 &&
-				enemies.size < 4) {
-			spawnEnemy();
+		if (enemies.size < 4) {
+			//spawnEnemy();
 		}
 	}
 	
@@ -123,13 +117,17 @@ public class CorporateRunGame extends ApplicationAdapter {
 	
 	private void spawnEnemy() {
 		Rectangle newEnemy = new Rectangle();
-		newEnemy.height = DEFAULT_IMAGE_HEIGHT;
-		newEnemy.width = DEFAULT_IMAGE_WIDTH;
-		newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
-		newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
+		newEnemy.height = Global.CELL_HEIGHT;
+		newEnemy.width = Global.CELL_WIDTH;
+		
+		Array<Tile> walkableCells = gameMap.getWalkableCells();
+		Tile walkableTile = walkableCells.random();
+		newEnemy.x = walkableTile.getTileCoord().getXCoord();
+		newEnemy.y = walkableTile.getTileCoord().getYCoord();
 		
 		for (int i = 0; i < enemies.size; i ++) {
-			if (enemies.get(i).getRectangle().overlaps(newEnemy)) {
+			Tile tile = gameMap.getMapCells().get(new TileCoord(walkableTile.getTileCoord().getXCoord(), walkableTile.getTileCoord().getYCoord()));
+			if (tile != null && tile.isWalkable() && !enemies.get(i).getRectangle().overlaps(newEnemy)) {
 				newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
 				newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
 				i = 0;

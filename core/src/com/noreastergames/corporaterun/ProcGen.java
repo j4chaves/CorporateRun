@@ -10,10 +10,10 @@ public class ProcGen {
 		GameMap map = new GameMap(Global.CELL_HEIGHT, Global.CELL_WIDTH, Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
 		
 		RectangularRoom room1 = new RectangularRoom(8, 8, 4, 4);
-		//RectangularRoom room2 = new RectangularRoom(10, 4, 6, 4);
+		RectangularRoom room2 = new RectangularRoom(16, 8, 4, 4);
 		
 		Array<RectangularRoom> rooms = new Array<>();
-		rooms.add(room1);
+		rooms.add(room1, room2);
 		
 		//HashMap mapCells = map.getMapCells()
 		for (RectangularRoom r : rooms) {

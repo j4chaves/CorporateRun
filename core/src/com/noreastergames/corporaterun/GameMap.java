@@ -84,8 +84,8 @@ public class GameMap {
 				String cellTextureName = "brickTile.png";
 				
 				Texture cellTexture = new Texture(cellTextureName);
-				TileCoord tileCoord = new TileCoord(j, i);
-				Tile tile = new Tile(cellRect, cellTexture, tileCoord, true, false);
+				TileCoord tileCoord = new TileCoord(i, j);
+				Tile tile = new Tile(cellRect, cellTexture, tileCoord, false, false);
 				//Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
 				mapCells.put(tileCoord, tile);
 			}

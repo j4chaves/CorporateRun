@@ -1,6 +1,7 @@
 package com.noreastergames.corporaterun;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Entity {
@@ -8,12 +9,12 @@ public class Entity {
 	private Rectangle rectangle;
 	private Texture texture;
 	
-	private TileCoord tileCoord;
+	private GridPoint2 gridPoint;
 
-	public Entity(Rectangle rectangle, Texture texture, TileCoord tileCoord) {
+	public Entity(Rectangle rectangle, Texture texture, GridPoint2 gridPoint) {
 		this.rectangle = rectangle;
 		this.texture = texture;
-		this.tileCoord = tileCoord;
+		this.gridPoint = gridPoint;
 	}
 
 
@@ -36,35 +37,35 @@ public class Entity {
 		this.texture = texture;
 	}
 	
-	public TileCoord getTileCoord() {
-		return tileCoord;
+	public GridPoint2 getGridPoint2() {
+		return gridPoint;
 	}
 
 
-	public void setTileCoord(TileCoord tileCoord) {
-		this.tileCoord = tileCoord;
+	public void setGridPoint2(GridPoint2 gridPoint) {
+		this.gridPoint = gridPoint;
 	}
 
 	public void moveEntity(Action action, Tile tile) {
 		if (Action.MOVE_UP.equals(action)) {
-			if (this.tileCoord.getYCoord() + 1 < Global.MAP_MAX_CELLS_VERTICAL && tile.isWalkable()) {
-				this.getRectangle().y += Global.CELL_HEIGHT;
-				this.tileCoord.setYCoord(this.tileCoord.getYCoord() + 1);
+			if (gridPoint.y + 1 < Global.MAP_MAX_CELLS_VERTICAL && tile.isWalkable()) {
+				getRectangle().y += Global.CELL_HEIGHT;
+				gridPoint.set(gridPoint.x, gridPoint.y + 1);
 			}
 		} else if (Action.MOVE_DOWN.equals(action)) {
-			if (this.tileCoord.getYCoord() -1 > -1 && tile.isWalkable()) {
-				this.getRectangle().y -= Global.CELL_HEIGHT;
-				this.tileCoord.setYCoord(this.tileCoord.getYCoord() - 1);
+			if (gridPoint.y - 1 > -1 && tile.isWalkable()) {
+				getRectangle().y -= Global.CELL_HEIGHT;
+				gridPoint.set(gridPoint.x, gridPoint.y - 1);
 			}
 		} else if (Action.MOVE_LEFT.equals(action)) {
-			if (this.tileCoord.getXCoord() - 1 > -1 && tile.isWalkable()) {
-				this.getRectangle().x -= Global.CELL_WIDTH;
-				this.tileCoord.setXCoord(this.tileCoord.getXCoord() - 1);
+			if (gridPoint.x - 1 > -1 && tile.isWalkable()) {
+				getRectangle().x -= Global.CELL_WIDTH;
+				gridPoint.set(gridPoint.x - 1, gridPoint.y);
 			}
 		} else if (Action.MOVE_RIGHT.equals(action)) {
-			if (this.tileCoord.getXCoord() + 1 < Global.MAP_MAX_CELLS_HORIZONTAL && tile.isWalkable()) {
-				this.getRectangle().x += Global.CELL_WIDTH;
-				this.tileCoord.setXCoord(this.tileCoord.getXCoord() + 1);
+			if (gridPoint.x + 1 < Global.MAP_MAX_CELLS_HORIZONTAL && tile.isWalkable()) {
+				getRectangle().x += Global.CELL_WIDTH;
+				gridPoint.set(gridPoint.x + 1, gridPoint.y);
 			}
 		}
 	}

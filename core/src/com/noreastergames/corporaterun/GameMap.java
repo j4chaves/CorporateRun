@@ -3,12 +3,13 @@ package com.noreastergames.corporaterun;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class GameMap {
 
-	private HashMap<TileCoord, Tile> mapCells;
+	private HashMap<GridPoint2, Tile> mapCells;
 	
 	private final int CELL_HEIGHT;
 	private final int CELL_WIDTH;
@@ -24,11 +25,11 @@ public class GameMap {
 		this.mapCells = generateMap();
 	}
 	
-	public HashMap<TileCoord, Tile> getMapCells() {
+	public HashMap<GridPoint2, Tile> getMapCells() {
 		return mapCells;
 	}
 
-	public void setMapCells(HashMap<TileCoord, Tile> mapCells) {
+	public void setMapCells(HashMap<GridPoint2, Tile> mapCells) {
 		this.mapCells = mapCells;
 	}
 
@@ -49,13 +50,13 @@ public class GameMap {
 	}
 	
 	public void setSpecificMapCell(Tile tile) {
-		if (mapCells.containsKey(tile.getTileCoord())) {
-			mapCells.replace(tile.getTileCoord(), tile);
+		if (mapCells.containsKey(tile.getGridPoint2())) {
+			mapCells.replace(tile.getGridPoint2(), tile);
 		}
 	}
 
-	private HashMap<TileCoord, Tile> generateMap() {
-		HashMap<TileCoord, Tile> mapCells = new HashMap<>();
+	private HashMap<GridPoint2, Tile> generateMap() {
+		HashMap<GridPoint2, Tile> mapCells = new HashMap<>();
 		for (int i = 0; i < MAP_MAX_CELLS_HORIZONTAL; i++) {
 			for (int j = 0; j < MAP_MAX_CELLS_VERTICAL; j++) {
 				Rectangle cellRect = new Rectangle();
@@ -84,7 +85,7 @@ public class GameMap {
 				String cellTextureName = "brickTile.png";
 				
 				Texture cellTexture = new Texture(cellTextureName);
-				TileCoord tileCoord = new TileCoord(i, j);
+				GridPoint2 tileCoord = new GridPoint2(i, j);
 				Tile tile = new Tile(cellRect, cellTexture, tileCoord, false, false);
 				//Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
 				mapCells.put(tileCoord, tile);

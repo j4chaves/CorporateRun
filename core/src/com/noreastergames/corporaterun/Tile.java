@@ -1,6 +1,7 @@
 package com.noreastergames.corporaterun;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Tile extends Entity {
@@ -10,9 +11,9 @@ public class Tile extends Entity {
 	private boolean inFieldOfView;
 	private boolean isOccupied;
 	
-	public Tile(Rectangle rectangle, Texture texture, TileCoord tileCoord, 
+	public Tile(Rectangle rectangle, Texture texture, GridPoint2 gridPoint, 
 			boolean isWalkable, boolean isTransparent) {
-		super(rectangle, texture, tileCoord);
+		super(rectangle, texture, gridPoint);
 		this.isWalkable = isWalkable;
 		this.isTransparent = isTransparent;
 	}

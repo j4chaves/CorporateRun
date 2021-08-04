@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -43,7 +44,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		enemies = new Array<>();
 		
 		Rectangle playerRectangle = new Rectangle(3*32, 3*32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
-		player = new Entity(playerRectangle, playerImage, new TileCoord(3, 3));
+		player = new Entity(playerRectangle, playerImage, new GridPoint2(3, 3));
 		
 		gameMap = new ProcGen().generateDungeon(Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
 	}
@@ -54,7 +55,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		
-		for (Map.Entry<TileCoord, Tile> entry : gameMap.getMapCells().entrySet()) {
+		for (Map.Entry<GridPoint2, Tile> entry : gameMap.getMapCells().entrySet()) {
 			Tile mapCell = entry.getValue();
 			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
 		}
@@ -76,23 +77,23 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 *  Keyboard Controls
 		 */
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			int attemptedYMove = player.getTileCoord().getYCoord() + 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getXCoord(), attemptedYMove));
+			int attemptedYMove = player.getGridPoint2().y + 1;
+			Tile tile = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
 			player.moveEntity(Action.MOVE_UP, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			int attemptedXMove = player.getTileCoord().getXCoord() - 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedXMove, player.getTileCoord().getYCoord()));
+			int attemptedXMove = player.getGridPoint2().x - 1;
+			Tile tile = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
 			player.moveEntity(Action.MOVE_LEFT, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			int attemptedYMove = player.getTileCoord().getYCoord() - 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(player.getTileCoord().getXCoord(), attemptedYMove));
+			int attemptedYMove = player.getGridPoint2().y - 1;
+			Tile tile = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
 			player.moveEntity(Action.MOVE_DOWN, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			int attemptedXMove = player.getTileCoord().getXCoord() + 1;
-			Tile tile = gameMap.getMapCells().get(new TileCoord(attemptedXMove, player.getTileCoord().getYCoord()));
+			int attemptedXMove = player.getGridPoint2().x + 1;
+			Tile tile = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
 			player.moveEntity(Action.MOVE_RIGHT, tile);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
@@ -122,11 +123,11 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		Array<Tile> walkableCells = gameMap.getWalkableCells();
 		Tile walkableTile = walkableCells.random();
-		newEnemy.x = walkableTile.getTileCoord().getXCoord();
-		newEnemy.y = walkableTile.getTileCoord().getYCoord();
+		newEnemy.x = walkableTile.getGridPoint2().x;
+		newEnemy.y = walkableTile.getGridPoint2().y;
 		
 		for (int i = 0; i < enemies.size; i ++) {
-			Tile tile = gameMap.getMapCells().get(new TileCoord(walkableTile.getTileCoord().getXCoord(), walkableTile.getTileCoord().getYCoord()));
+			Tile tile = gameMap.getMapCells().get(new GridPoint2(walkableTile.getGridPoint2().x, walkableTile.getGridPoint2().y));
 			if (tile != null && tile.isWalkable() && !enemies.get(i).getRectangle().overlaps(newEnemy)) {
 				newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
 				newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
@@ -135,7 +136,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 			}
 		}
 
-		Entity enemy = new Entity(newEnemy, enemyImage, new TileCoord((int)newEnemy.x, (int)newEnemy.y));
+		Entity enemy = new Entity(newEnemy, enemyImage, new GridPoint2((int)newEnemy.x, (int)newEnemy.y));
 		enemies.add(enemy);
 	}
 }

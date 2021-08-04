@@ -1,6 +1,7 @@
 package com.noreastergames.corporaterun;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -20,7 +21,7 @@ public class ProcGen {
 			for (int i = r.getBottomLeftX() / 32; i < r.getTopRightX() / 32; i++) {
 				for (int j = r.getBottomLeftY() / 32; j < r.getTopRightY() / 32; j++) {
 					Rectangle rect = new Rectangle(i * 32, j * 32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
-					TileCoord tileCoord = new TileCoord(i, j);
+					GridPoint2 tileCoord = new GridPoint2(i, j);
 					Texture texture = new Texture("grassTile.png");
 					Tile tile = new Tile(rect, texture, tileCoord, true, false);
 					map.setSpecificMapCell(tile);

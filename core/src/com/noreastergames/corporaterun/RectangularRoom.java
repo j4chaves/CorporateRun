@@ -2,6 +2,7 @@ package com.noreastergames.corporaterun;
 
 public class RectangularRoom {
 
+	// TODO Change to GridPoint2
 	private int bottomLeftX;
 	private int bottomLeftY;
 	private int topRightX;

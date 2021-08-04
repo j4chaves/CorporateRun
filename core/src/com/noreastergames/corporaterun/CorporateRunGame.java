@@ -105,7 +105,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		 * Spawn new enemies
 		 */
 		if (enemies.size < 4) {
-			//spawnEnemy();
+			spawnEnemy();
 		}
 	}
 	
@@ -123,20 +123,10 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		Array<Tile> walkableCells = gameMap.getWalkableCells();
 		Tile walkableTile = walkableCells.random();
-		newEnemy.x = walkableTile.getGridPoint2().x;
-		newEnemy.y = walkableTile.getGridPoint2().y;
-		
-		for (int i = 0; i < enemies.size; i ++) {
-			Tile tile = gameMap.getMapCells().get(new GridPoint2(walkableTile.getGridPoint2().x, walkableTile.getGridPoint2().y));
-			if (tile != null && tile.isWalkable() && !enemies.get(i).getRectangle().overlaps(newEnemy)) {
-				newEnemy.x = MathUtils.random(3, Global.MAP_MAX_CELLS_HORIZONTAL-1) * Global.CELL_WIDTH;
-				newEnemy.y = MathUtils.random(2, Global.MAP_MAX_CELLS_VERTICAL-1) * Global.CELL_HEIGHT;
-				i = 0;
-				System.out.println("Enemy overlapped");
-			}
-		}
+		newEnemy.x = walkableTile.getGridPoint2().x * 32;
+		newEnemy.y = walkableTile.getGridPoint2().y * 32;
 
-		Entity enemy = new Entity(newEnemy, enemyImage, new GridPoint2((int)newEnemy.x, (int)newEnemy.y));
+		Entity enemy = new Entity(newEnemy, enemyImage, new GridPoint2(walkableTile.getGridPoint2().x, walkableTile.getGridPoint2().y));
 		enemies.add(enemy);
 	}
 }

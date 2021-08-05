@@ -1,6 +1,6 @@
 package com.noreastergames.corporaterun;
 
-public class RectangularRoom {
+public class RectangularRoom implements Comparable<RectangularRoom>{
 
 	// TODO Change to GridPoint2
 	private int bottomLeftX;
@@ -28,6 +28,13 @@ public class RectangularRoom {
 	public int[][] getInner() {
 		int[][] array = {{bottomLeftX + 1, bottomLeftY + 1},{topRightX, topRightY}};
 		return array; 
+	}
+	
+	public boolean intersects(RectangularRoom otherRoom) {
+		return (bottomLeftX <= otherRoom.getTopRightX() &&
+				bottomLeftY <= otherRoom.getTopRightY() &&
+				topRightX >= otherRoom.getBottomLeftX() &&
+				topRightY >= otherRoom.getBottomLeftY());
 	}
 
 	public int getBottomLeftX() {
@@ -93,5 +100,16 @@ public class RectangularRoom {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
+
+	@Override
+	public int compareTo(RectangularRoom other) {
+		if (bottomLeftX < other.bottomLeftX) {
+			return 1;
+		} else if (bottomLeftX == other.getBottomLeftX() && bottomLeftY != other.getBottomLeftY()) {
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+
 }

@@ -43,10 +43,13 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		enemies = new Array<>();
 		
-		Rectangle playerRectangle = new Rectangle(3*32, 3*32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
-		player = new Entity(playerRectangle, playerImage, new GridPoint2(3, 3));
-		
 		gameMap = new ProcGen().generateDungeon(Global.MAP_MAX_CELLS_HORIZONTAL, Global.MAP_MAX_CELLS_VERTICAL);
+		
+		Tile randomTile = gameMap.getWalkableCells().random();
+		int playerStartX = randomTile.getGridPoint2().x;
+		int playerStartY = randomTile.getGridPoint2().y;
+		Rectangle playerRectangle = new Rectangle(playerStartX * 32, playerStartY * 32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
+		player = new Entity(playerRectangle, playerImage, new GridPoint2(playerStartX, playerStartY));
 	}
 
 	@Override

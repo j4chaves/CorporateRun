@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SortedIntList;
 
 public class ProcGen {
 
@@ -68,10 +69,33 @@ public class ProcGen {
 			RectangularRoom startRoom = rooms.get(i);
 			RectangularRoom endRoom = rooms.get(i - 1);
 			
-			GridPoint2 tunnelStart = new GridPoint2(startRoom.getCenterX(), startRoom.getCenterY());
-			GridPoint2 tunnelEnd = new GridPoint2(endRoom.getCenterX(), endRoom.getCenterY());
+			GridPoint2 tunnelStart = new GridPoint2(startRoom.getCenterX() / 32, startRoom.getCenterY() / 32);
+			GridPoint2 tunnelEnd = new GridPoint2(endRoom.getCenterX() / 32, endRoom.getCenterY() / 32);
 			Bresenham2 tunnel = new Bresenham2();
 			Array<GridPoint2> tunnelPoints = tunnel.line(tunnelStart, tunnelEnd);
+			
+			for (int index = 0; index < tunnelPoints.size; index++) {
+				if (index == 0) {
+					continue;
+				}
+				
+				if (index + 1 <= tunnelPoints.size -1) {
+					GridPoint2 point1 = tunnelPoints.get(index);
+					GridPoint2 point2 = tunnelPoints.get(index + 1);
+					
+					if (point1.dst2(point2) > 1) {
+						GridPoint2 newPoint = new GridPoint2(point1);
+						if (point1.sub(point2).x < 0) {
+							point1.set(newPoint);	// Reset the point in tunnelPoints array because somehow this affects it
+							newPoint.x += 1;
+						} else if (point1.sub(point2).y < 0) {
+							point1.set(newPoint);	// Reset the point in tunnelPoints array because somehow this affects it
+							newPoint.y += 1;
+						}
+						tunnelPoints.insert(index + 1, newPoint);
+					}
+				}
+			}
 			
 			/** This block for generating 'L' shaped tunnel
 			int cornerX, cornerY;
@@ -86,13 +110,11 @@ public class ProcGen {
 			
 			// TODO - NEED TO FIX TUNNELING TO ACCOUNT FOR SIZE 32 PIXEL TILES 
 			for (GridPoint2 point : tunnelPoints) {
-				if (point.x % 32 == 0 && point.y % 32 == 0) {
-					Rectangle rect = new Rectangle(point.x, point.y, Global.CELL_WIDTH, Global.CELL_HEIGHT);
-					GridPoint2 tileCoord = new GridPoint2(point.x / 32, point.y / 32);
-					Texture texture = new Texture("grassTile.png");
-					Tile tile = new Tile(rect, texture, tileCoord, true, false);
-					map.setSpecificMapCell(tile);
-				}
+				Rectangle rect = new Rectangle(point.x * 32, point.y * 32, Global.CELL_WIDTH, Global.CELL_HEIGHT);
+				GridPoint2 tileCoord = new GridPoint2(point.x, point.y);
+				Texture texture = new Texture("grassTile.png");
+				Tile tile = new Tile(rect, texture, tileCoord, true, false);
+				map.setSpecificMapCell(tile);
 			}
 		}
 		

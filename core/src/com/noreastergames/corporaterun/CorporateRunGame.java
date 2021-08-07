@@ -60,7 +60,9 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		for (Map.Entry<GridPoint2, Tile> entry : gameMap.getMapCells().entrySet()) {
 			Tile mapCell = entry.getValue();
-			batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
+			if (mapCell.isInFieldOfView()) {
+				batch.draw(mapCell.getTexture(), mapCell.getRectangle().x, mapCell.getRectangle().y);
+			}
 		}
 		
 		batch.draw(player.getTexture(), player.getRectangle().x, player.getRectangle().y);
@@ -74,6 +76,8 @@ public class CorporateRunGame extends ApplicationAdapter {
 		}
 		
 		batch.end();
+		
+		gameMap.updateFOV(player);
 		
 		
 		/**

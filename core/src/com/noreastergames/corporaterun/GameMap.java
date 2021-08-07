@@ -1,6 +1,7 @@
 package com.noreastergames.corporaterun;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.GridPoint2;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.utils.Array;
 public class GameMap {
 
 	private HashMap<GridPoint2, Tile> mapCells;
+	private Array<Tile> visible;
+	private Array<Tile> explored;
 	
 	private final int CELL_HEIGHT;
 	private final int CELL_WIDTH;
@@ -21,6 +24,9 @@ public class GameMap {
 		this.CELL_WIDTH = cellWidth;
 		this.MAP_MAX_CELLS_HORIZONTAL = maxCellsHoriz;
 		this.MAP_MAX_CELLS_VERTICAL = maxCellsVert;
+		
+		this.visible = new Array<>();
+		this.explored = new Array<>();
 		
 		this.mapCells = generateMap();
 	}
@@ -104,5 +110,24 @@ public class GameMap {
 		}
 		
 		return walkableCells;
+	}
+	
+	public void updateFOV(Entity playerTile) {
+		int radius = 4;
+		GridPoint2 playerCoord = playerTile.getGridPoint2();
+		
+		for (Map.Entry<GridPoint2, Tile> entry : mapCells.entrySet()) {
+			Tile tile = entry.getValue();
+			if (tile.getGridPoint2().dst(playerCoord) < radius) {
+				tile.setExplored(true);
+				tile.setInFieldOfView(true);
+				explored.add(tile);
+				visible.add(tile);
+			} else {
+				if (visible.contains(tile, false)) {
+					visible.removeValue(tile, false);
+				}
+			}
+		}
 	}
 }

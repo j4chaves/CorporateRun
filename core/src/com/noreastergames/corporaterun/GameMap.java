@@ -71,29 +71,11 @@ public class GameMap {
 				cellRect.x = CELL_WIDTH * i;
 				cellRect.y = CELL_HEIGHT * j;
 				
-				/*int randTile = MathUtils.random(0, 2);
-				String cellTextureName = new String();
-				boolean isWalkable, isTransparent;
-				if (randTile == 0) {
-					cellTextureName = "grassTile.png";
-					isWalkable = true;
-					isTransparent = true;
-				} else if (randTile == 1) {
-					cellTextureName = "waterTile.png";
-					isWalkable = false;
-					isTransparent = true;
-				} else {
-					cellTextureName = "brickTile.png";
-					isWalkable = false;
-					isTransparent = false;
-				}*/
-				
 				String cellTextureName = "brickTile.png";
 				
 				Texture cellTexture = new Texture(cellTextureName);
 				GridPoint2 tileCoord = new GridPoint2(i, j);
 				Tile tile = new Tile(cellRect, cellTexture, tileCoord, false, false);
-				//Tile tile = new Tile(cellRect, cellTexture, tileCoord, isWalkable, isTransparent);
 				mapCells.put(tileCoord, tile);
 			}
 		}

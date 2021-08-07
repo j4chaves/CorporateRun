@@ -76,6 +76,7 @@ public class GameMap {
 				Texture cellTexture = new Texture(cellTextureName);
 				GridPoint2 tileCoord = new GridPoint2(i, j);
 				Tile tile = new Tile(cellRect, cellTexture, tileCoord, false, false);
+				tile.setTileType(TileType.GRASS);
 				mapCells.put(tileCoord, tile);
 			}
 		}
@@ -103,11 +104,22 @@ public class GameMap {
 			if (tile.getGridPoint2().dst(playerCoord) < radius) {
 				tile.setExplored(true);
 				tile.setInFieldOfView(true);
+				if (tile.getTileType().equals(TileType.BRICK)) {
+					tile.setTexture(new Texture("grassTile.png"));
+				} else if (tile.getTileType().equals(TileType.GRASS)) {
+					tile.setTexture(new Texture("brickTile.png"));
+				}
 				explored.add(tile);
 				visible.add(tile);
 			} else {
 				if (visible.contains(tile, false)) {
 					visible.removeValue(tile, false);
+					
+					if (tile.getTileType().equals(TileType.BRICK)) {
+						tile.setTexture(new Texture("grassTileOutsideFOV.png"));
+					} else if (tile.getTileType().equals(TileType.GRASS)) {
+						tile.setTexture(new Texture("brickTileOutsideFOV.png"));
+					}
 				}
 			}
 		}

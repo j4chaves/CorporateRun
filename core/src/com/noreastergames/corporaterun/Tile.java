@@ -12,11 +12,14 @@ public class Tile extends Entity {
 	private boolean isOccupied;
 	private boolean isExplored;
 	
+	private TileType tileType;
+	
 	public Tile(Rectangle rectangle, Texture texture, GridPoint2 gridPoint, 
 			boolean isWalkable, boolean isTransparent) {
 		super(rectangle, texture, gridPoint);
 		this.isWalkable = isWalkable;
 		this.isTransparent = isTransparent;
+		tileType = TileType.BRICK;
 	}
 
 	public boolean isInFieldOfView() {
@@ -49,5 +52,13 @@ public class Tile extends Entity {
 
 	public void setExplored(boolean isExplored) {
 		this.isExplored = isExplored;
+	}
+
+	public TileType getTileType() {
+		return tileType;
+	}
+
+	public void setTileType(TileType tileType) {
+		this.tileType = tileType;
 	}
 }

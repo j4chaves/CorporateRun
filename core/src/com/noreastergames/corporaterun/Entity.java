@@ -10,6 +10,8 @@ public class Entity {
 	private Texture texture;
 	
 	private GridPoint2 gridPoint;
+	
+	private boolean blocksMovement;
 
 	public Entity(Rectangle rectangle, Texture texture, GridPoint2 gridPoint) {
 		this.rectangle = rectangle;
@@ -17,21 +19,17 @@ public class Entity {
 		this.gridPoint = gridPoint;
 	}
 
-
 	public Rectangle getRectangle() {
 		return rectangle;
 	}
-
 
 	public void setRectangle(Rectangle rectangle) {
 		this.rectangle = rectangle;
 	}
 
-
 	public Texture getTexture() {
 		return texture;
 	}
-
 
 	public void setTexture(Texture texture) {
 		this.texture = texture;
@@ -41,9 +39,16 @@ public class Entity {
 		return gridPoint;
 	}
 
-
 	public void setGridPoint2(GridPoint2 gridPoint) {
 		this.gridPoint = gridPoint;
+	}
+
+	public boolean isBlocksMovement() {
+		return blocksMovement;
+	}
+
+	public void setBlocksMovement(boolean blocksMovement) {
+		this.blocksMovement = blocksMovement;
 	}
 
 	public void moveEntity(Action action, Tile tile) {
@@ -68,10 +73,5 @@ public class Entity {
 				gridPoint.set(gridPoint.x + 1, gridPoint.y);
 			}
 		}
-	}
-	
-	private boolean isValidMovement() {
-		return false;
-	}
-	
+	}	
 }

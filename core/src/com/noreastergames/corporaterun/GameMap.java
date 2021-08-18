@@ -2,6 +2,7 @@ package com.noreastergames.corporaterun;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.GridPoint2;
@@ -123,5 +124,15 @@ public class GameMap {
 				}
 			}
 		}
+	}
+	
+	public Optional<Entity> getBlockingEntityAtLocation(Array<Entity> entities, GridPoint2 point) {
+		for (Entity e : entities) {
+			if (e.isBlocksMovement() && e.getGridPoint2().equals(point)) {
+				return Optional.of(e);
+			}
+		}
+		
+		return Optional.empty();
 	}
 }

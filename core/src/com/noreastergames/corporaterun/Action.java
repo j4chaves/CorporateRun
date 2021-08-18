@@ -6,4 +6,5 @@ public enum Action {
 	MOVE_UP,
 	MOVE_DOWN,
 	ATTACK,
+	DO_NOTHING
 }

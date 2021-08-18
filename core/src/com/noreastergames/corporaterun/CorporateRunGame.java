@@ -83,26 +83,41 @@ public class CorporateRunGame extends ApplicationAdapter {
 		/**
 		 *  Keyboard Controls
 		 */
+		Action action = Action.DO_NOTHING;
+		Tile tileToMoveTo = gameMap.getMapCells().get(player.getGridPoint2());
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
 			int attemptedYMove = player.getGridPoint2().y + 1;
-			Tile tile = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
-			player.moveEntity(Action.MOVE_UP, tile);
+			tileToMoveTo = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
+			action = Action.MOVE_UP;
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
 			int attemptedXMove = player.getGridPoint2().x - 1;
-			Tile tile = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
-			player.moveEntity(Action.MOVE_LEFT, tile);
+			tileToMoveTo = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
+			action = Action.MOVE_LEFT;
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 			int attemptedYMove = player.getGridPoint2().y - 1;
-			Tile tile = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
-			player.moveEntity(Action.MOVE_DOWN, tile);
+			tileToMoveTo = gameMap.getMapCells().get(new GridPoint2(player.getGridPoint2().x, attemptedYMove));
+			action = Action.MOVE_DOWN;
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 			int attemptedXMove = player.getGridPoint2().x + 1;
-			Tile tile = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
-			player.moveEntity(Action.MOVE_RIGHT, tile);
+			tileToMoveTo = gameMap.getMapCells().get(new GridPoint2(attemptedXMove, player.getGridPoint2().y));
+			action = Action.MOVE_RIGHT;
 		}
+		
+		if (!tileToMoveTo.getGridPoint2().equals(player.getGridPoint2())) {
+			if(gameMap.getBlockingEntityAtLocation(enemies, tileToMoveTo.getGridPoint2()).isPresent()) {
+				action = Action.ATTACK;
+			}
+		}
+		
+		if (Action.ATTACK.equals(action)) {
+			// TODO insert attact code
+		} else {
+			player.moveEntity(action, tileToMoveTo);
+		}
+		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 			Gdx.app.exit();
 		}
@@ -134,6 +149,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		newEnemy.y = walkableTile.getGridPoint2().y * 32;
 
 		Entity enemy = new Entity(newEnemy, enemyImage, new GridPoint2(walkableTile.getGridPoint2().x, walkableTile.getGridPoint2().y));
+		enemy.setBlocksMovement(true);
 		enemies.add(enemy);
 	}
 }

@@ -79,7 +79,6 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		gameMap.updateFOV(player);
 		
-		
 		/**
 		 *  Keyboard Controls
 		 */
@@ -114,6 +113,7 @@ public class CorporateRunGame extends ApplicationAdapter {
 		
 		if (Action.ATTACK.equals(action)) {
 			// TODO insert attact code
+			handleEnemyTurns(enemies); // TODO Need to refactor code for legit turns. This code is currently in the incorrect spot when enemies are able to move and attack
 		} else {
 			player.moveEntity(action, tileToMoveTo);
 		}
@@ -151,5 +151,11 @@ public class CorporateRunGame extends ApplicationAdapter {
 		Entity enemy = new Entity(newEnemy, enemyImage, new GridPoint2(walkableTile.getGridPoint2().x, walkableTile.getGridPoint2().y));
 		enemy.setBlocksMovement(true);
 		enemies.add(enemy);
+	}
+	
+	private void handleEnemyTurns(Array<Entity> enemies) {
+		for (Entity e : enemies) {
+			System.out.println("Enemy " + e + " wants a legit turn");
+		}
 	}
 }

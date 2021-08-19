@@ -3,6 +3,7 @@ package com.noreastergames.corporaterun;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
+import com.noreastergames.corporaterun.entity.Entity;
 
 public class Tile extends Entity {
 	

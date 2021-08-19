@@ -1,6 +1,7 @@
 package com.noreastergames.corporaterun;
 
 import com.badlogic.gdx.utils.Array;
+import com.noreastergames.corporaterun.entity.Entity;
 
 public class Engine {
 	

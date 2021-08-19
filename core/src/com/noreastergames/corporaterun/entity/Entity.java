@@ -1,8 +1,11 @@
-package com.noreastergames.corporaterun;
+package com.noreastergames.corporaterun.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
+import com.noreastergames.corporaterun.Action;
+import com.noreastergames.corporaterun.Global;
+import com.noreastergames.corporaterun.Tile;
 
 public class Entity {
 	

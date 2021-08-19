@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.noreastergames.corporaterun.entity.Entity;
 
 public class CorporateRunGame extends ApplicationAdapter {
 	private static final int SCREEN_HEIGHT = 1024;

@@ -15,6 +15,8 @@ public class Entity {
 	private GridPoint2 gridPoint;
 	
 	private boolean blocksMovement;
+	private boolean isVisible;
+	
 
 	public Entity(Rectangle rectangle, Texture texture, GridPoint2 gridPoint) {
 		this.rectangle = rectangle;
@@ -52,6 +54,14 @@ public class Entity {
 
 	public void setBlocksMovement(boolean blocksMovement) {
 		this.blocksMovement = blocksMovement;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 	public void moveEntity(Action action, Tile tile) {

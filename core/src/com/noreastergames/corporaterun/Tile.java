@@ -11,7 +11,6 @@ public class Tile extends Entity {
 	private final boolean isTransparent;	// True if the tile doesn't block player's Field of View
 	private boolean inFieldOfView;
 	private boolean isOccupied;
-	private boolean isExplored;
 	
 	private TileType tileType;
 	
@@ -45,14 +44,6 @@ public class Tile extends Entity {
 
 	public void setOccupied(boolean isOccupied) {
 		this.isOccupied = isOccupied;
-	}
-
-	public boolean isExplored() {
-		return isExplored;
-	}
-
-	public void setExplored(boolean isExplored) {
-		this.isExplored = isExplored;
 	}
 
 	public TileType getTileType() {

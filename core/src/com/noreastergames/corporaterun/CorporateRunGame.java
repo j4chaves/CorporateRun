@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -69,7 +68,12 @@ public class CorporateRunGame extends ApplicationAdapter {
 		batch.draw(player.getTexture(), player.getRectangle().x, player.getRectangle().y);
 		
 		for (Entity enemy : enemies) {
-			batch.draw(enemy.getTexture(), enemy.getRectangle().x, enemy.getRectangle().y);
+			if (enemy.getGridPoint2().dst(player.getGridPoint2()) < 4) {	// TODO change 4 into a radius field in the player class
+				enemy.setVisible(true);
+			}
+			if (enemy.isVisible()) {
+				batch.draw(enemy.getTexture(), enemy.getRectangle().x, enemy.getRectangle().y);
+			}
 			
 			if (enemy.getRectangle().overlaps(player.getRectangle())) {
 				enemies.removeValue(enemy, false);

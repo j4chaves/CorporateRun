@@ -104,7 +104,7 @@ public class GameMap {
 		for (Map.Entry<GridPoint2, Tile> entry : mapCells.entrySet()) {
 			Tile tile = entry.getValue();
 			if (tile.getGridPoint2().dst(playerCoord) < radius) {
-				tile.setExplored(true);
+				tile.setVisible(true);
 				tile.setInFieldOfView(true);
 				if (tile.getTileType().equals(TileType.BRICK)) {
 					tile.setTexture(new Texture("grassTile.png"));
